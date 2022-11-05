@@ -38,12 +38,6 @@ namespace Pounds.Control
 
         private void Update()
         {
-
-            if (CheckIfPlayerOnLand())
-            {
-                Debug.Log("on land");
-            }
-
             MovementAction();
             JumpAction();
 
@@ -70,13 +64,22 @@ namespace Pounds.Control
                 return;
             }
         }
+
+        // jump multiplier eklenecek input süresine göre ayarlanacak þekilde
+
         private void JumpAction()
         {
-            if (_jumpInput)
+            if (_jumpInput && CheckIfPlayerOnLand())
             {
                 SetVelocityY(jumpPower);
             }
         }
+        private bool CheckIfPlayerOnLand()
+        {
+            return Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.1f) ||
+                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.1f);
+        }
+
         #region Set Velocity
         private void SetVelocityX(float xVelocity)
         {
@@ -89,11 +92,7 @@ namespace Pounds.Control
             _rigidbody.velocity = _currentVelocityVector;
         }
         #endregion
-        private bool CheckIfPlayerOnLand()
-        {
-            //return Physics.Raycast(leftGroundCheckTransform.position, Vector3.up, -0.5f) || Physics.Raycast(rightGroundCheckTransform.position, Vector3.up, -0.5f);
-            return Physics.Raycast(transform.position, Vector3.up, -2f);
-        }
+
         private void CheckMovementRotation()
         {
             if (_isMovingLeft)
@@ -104,7 +103,6 @@ namespace Pounds.Control
             {
                 _bodyTween = bodyTransform.DOLocalRotate(new Vector3(0, 0, 0), 0.3f);
             }
-
         }
     }
 }
