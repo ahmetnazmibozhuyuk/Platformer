@@ -40,6 +40,7 @@ namespace Pounds.Control
         {
             MovementAction();
             JumpAction();
+            Debug.Log(CheckForward());
 
         }
         private void MovementAction()
@@ -49,14 +50,14 @@ namespace Pounds.Control
                 SetVelocityX(0);
                 return;
             }
-            if (_leftInput)
+            if (_leftInput && !CheckForward())
             {
                 CheckMovementRotation();
                 SetVelocityX(-movementSpeed);
                 _isMovingLeft = true;
                 return;
             }
-            if (_rightInput)
+            if (_rightInput && !CheckForward())
             {
                 CheckMovementRotation();
                 SetVelocityX(movementSpeed);
@@ -78,6 +79,17 @@ namespace Pounds.Control
         {
             return Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.1f) ||
                 Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.1f);
+        }
+        private bool CheckForward()
+        {
+            if (_isMovingLeft)
+            {
+                return Physics.Raycast(rightGroundCheckTransform.position, Vector3.left * -1, 0.1f);
+            }
+            else
+            {
+                return Physics.Raycast(leftGroundCheckTransform.position, Vector3.right * -1, 0.1f);
+            }
         }
 
         #region Set Velocity
