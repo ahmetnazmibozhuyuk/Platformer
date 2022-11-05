@@ -22,14 +22,19 @@ namespace Pounds.Control
         [SerializeField] private Transform leftGroundCheckTransform;
         [SerializeField] private Transform rightGroundCheckTransform;
 
+        [SerializeField] private Transform leftTopCheckTransform;
+        [SerializeField] private Transform rightTopCheckTransform;
+
         private bool _isMovingLeft;
-        private bool _isInAir;
+        private bool _isOnGround;
 
         private Tweener _bodyTween;
 
         private Vector3 _currentVelocityVector;
 
         private Rigidbody _rigidbody;
+
+        [SerializeField] private float maxJumpInputPressTime = 1f;
 
         private void Awake()
         {
@@ -40,8 +45,7 @@ namespace Pounds.Control
         {
             MovementAction();
             JumpAction();
-            Debug.Log(CheckForward());
-
+            CheckIfPlayerOnLand();
         }
         private void MovementAction()
         {
@@ -50,14 +54,14 @@ namespace Pounds.Control
                 SetVelocityX(0);
                 return;
             }
-            if (_leftInput && !CheckForward())
+            if (_leftInput && (_isOnGround || !CheckLeftSide()))
             {
                 CheckMovementRotation();
                 SetVelocityX(-movementSpeed);
                 _isMovingLeft = true;
                 return;
             }
-            if (_rightInput && !CheckForward())
+            if (_rightInput && (_isOnGround || !CheckRightSide()))
             {
                 CheckMovementRotation();
                 SetVelocityX(movementSpeed);
@@ -70,26 +74,23 @@ namespace Pounds.Control
 
         private void JumpAction()
         {
-            if (_jumpInput && CheckIfPlayerOnLand())
+            if (_jumpInput && _isOnGround)
             {
                 SetVelocityY(jumpPower);
             }
         }
-        private bool CheckIfPlayerOnLand()
+        private void CheckIfPlayerOnLand()
         {
-            return Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.1f) ||
+            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.1f) ||
                 Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.1f);
         }
-        private bool CheckForward()
+        private bool CheckLeftSide()
         {
-            if (_isMovingLeft)
-            {
-                return Physics.Raycast(rightGroundCheckTransform.position, Vector3.left * -1, 0.1f);
-            }
-            else
-            {
-                return Physics.Raycast(leftGroundCheckTransform.position, Vector3.right * -1, 0.1f);
-            }
+            return Physics.Raycast(leftGroundCheckTransform.position, Vector3.left, 0.2f);
+        }
+        private bool CheckRightSide()
+        {
+            return Physics.Raycast(rightGroundCheckTransform.position, Vector3.right, 0.2f);
         }
 
         #region Set Velocity
