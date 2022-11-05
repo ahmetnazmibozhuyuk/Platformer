@@ -2,13 +2,7 @@ fileFormatVersion: 2
 guid: f5287563538366f4ea3267a8055b7395
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable:
-  - first:
-      74: 4249592888964096923
-    second: Pig|PigAction
-  - first:
-      74: -584677724179970436
-    second: Pig|PigAction.001
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
