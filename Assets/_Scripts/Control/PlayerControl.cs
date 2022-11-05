@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace Pounds.Control
 {
@@ -18,8 +19,13 @@ namespace Pounds.Control
         [SerializeField] private float movementSpeed = 20f;
         [SerializeField] private float jumpPower = 120f;
 
+        [SerializeField] private Transform leftGroundCheckTransform;
+        [SerializeField] private Transform rightGroundCheckTransform;
+
         private bool _isMovingLeft;
         private bool _isInAir;
+
+        private Tweener _bodyTween;
 
         private Vector3 _currentVelocityVector;
 
@@ -51,12 +57,16 @@ namespace Pounds.Control
             }
             if (_leftInput)
             {
+                CheckMovementRotation();
                 SetVelocityX(-movementSpeed);
+                _isMovingLeft = true;
                 return;
             }
             if (_rightInput)
             {
+                CheckMovementRotation();
                 SetVelocityX(movementSpeed);
+                _isMovingLeft = false;
                 return;
             }
         }
@@ -81,7 +91,20 @@ namespace Pounds.Control
         #endregion
         private bool CheckIfPlayerOnLand()
         {
-            return Physics.Raycast(transform.position, Vector3.up, -1);
+            //return Physics.Raycast(leftGroundCheckTransform.position, Vector3.up, -0.5f) || Physics.Raycast(rightGroundCheckTransform.position, Vector3.up, -0.5f);
+            return Physics.Raycast(transform.position, Vector3.up, -2f);
+        }
+        private void CheckMovementRotation()
+        {
+            if (_isMovingLeft)
+            {
+                _bodyTween = bodyTransform.DOLocalRotate(new Vector3(0, 180, 0), 0.3f);
+            }
+            else
+            {
+                _bodyTween = bodyTransform.DOLocalRotate(new Vector3(0, 0, 0), 0.3f);
+            }
+
         }
     }
 }

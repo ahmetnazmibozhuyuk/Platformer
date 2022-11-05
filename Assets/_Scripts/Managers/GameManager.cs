@@ -15,9 +15,8 @@ namespace Pounds.Managers
 
         public void CoinCollected(float coinValue)
         {
-            Debug.Log("Coin collected!");
             _score += coinValue;
-            scoreText.SetText(_score.ToString());
+            scoreText.SetText("Score: "+_score.ToString());
         }
     }
 }

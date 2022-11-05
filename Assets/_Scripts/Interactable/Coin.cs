@@ -20,7 +20,7 @@ namespace Pounds.Interactable
             if (other.CompareTag("Player"))
             {
                 _rotateTweener.Kill();
-                GameManager.Instance.CoinCollected();
+                GameManager.Instance.CoinCollected(coinValue);
                 Destroy(gameObject);
             }
         }
