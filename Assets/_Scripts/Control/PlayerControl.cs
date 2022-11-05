@@ -7,14 +7,14 @@ namespace Pounds.Control
     {
         #region Inputs
         private bool _leftInput { get { return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A); } }
-        private bool _leftInputReleased { get { return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A); } }
+        private bool _leftInputReleased { get { return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A); } }
         private bool _rightInput { get { return Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D); ; } }
-        private bool _rightInputReleased { get { return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKey(KeyCode.D); ; } }
+        private bool _rightInputReleased { get { return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D); ; } }
         private bool _jumpInput { get { return Input.GetKeyDown(KeyCode.Space); } }
         private bool _jumpInputReleased { get { return Input.GetKeyUp(KeyCode.Space); } }
         #endregion
 
-
+        [SerializeField] private Transform bodyTransform;
         [SerializeField] private float movementSpeed = 20f;
         [SerializeField] private float jumpPower = 120f;
 
@@ -41,21 +41,22 @@ namespace Pounds.Control
             MovementAction();
             JumpAction();
 
-
-
         }
         private void MovementAction()
         {
+            if (_leftInputReleased || _rightInputReleased)
+            {
+                SetVelocityX(0);
+                return;
+            }
             if (_leftInput)
             {
                 SetVelocityX(-movementSpeed);
-                Debug.Log("left input");
                 return;
             }
             if (_rightInput)
             {
                 SetVelocityX(movementSpeed);
-                Debug.Log("right input");
                 return;
             }
         }
@@ -64,10 +65,9 @@ namespace Pounds.Control
             if (_jumpInput)
             {
                 SetVelocityY(jumpPower);
-                Debug.Log("jump input");
             }
         }
-
+        #region Set Velocity
         private void SetVelocityX(float xVelocity)
         {
             _currentVelocityVector.Set(xVelocity, _rigidbody.velocity.y, _rigidbody.velocity.z);
@@ -78,9 +78,9 @@ namespace Pounds.Control
             _currentVelocityVector.Set(_rigidbody.velocity.x, yVelocity, _rigidbody.velocity.z);
             _rigidbody.velocity = _currentVelocityVector;
         }
+        #endregion
         private bool CheckIfPlayerOnLand()
         {
-            //return Physics.BoxCast(transform.position, transform.position, Vector3.up);
             return Physics.Raycast(transform.position, Vector3.up, -1);
         }
     }
