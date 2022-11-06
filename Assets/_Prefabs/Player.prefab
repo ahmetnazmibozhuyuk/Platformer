@@ -111,11 +111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a584f469bd02b748b113eda14a50b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftGroundCheckTransform: {fileID: 6592972541292787951}
+  rightGroundCheckTransform: {fileID: 254856874541156797}
   bodyTransform: {fileID: 8419534187686100895}
   movementSpeed: 12
   jumpPower: 25
-  leftGroundCheckTransform: {fileID: 6592972541292787951}
-  rightGroundCheckTransform: {fileID: 254856874541156797}
+  maxCoyoteTime: 0.15
 --- !u!54 &8309854626030874127
 Rigidbody:
   m_ObjectHideFlags: 0

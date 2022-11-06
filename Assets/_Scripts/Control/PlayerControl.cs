@@ -32,6 +32,11 @@ namespace Pounds.Control
 
         private Rigidbody _rigidbody;
 
+
+        private bool _inCoyoteTime;
+        [SerializeField] private float maxCoyoteTime = 0.15f;
+        private float _coyoteTimeCounter;
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -43,6 +48,7 @@ namespace Pounds.Control
             JumpAction();
             CheckIfPlayerOnLand();
             GravityCheck();
+            CheckForCoyoteTime();
         }
         private void MovementAction()
         {
@@ -72,13 +78,32 @@ namespace Pounds.Control
             if (_jumpInputReleased && _rigidbody.velocity.y>0)  // input kalktýðýnda yükseliþin durmasý için
             {
                 SetVelocityY(0);
+                _coyoteTimeCounter = 0;
                 return;
             }
-            if (_jumpInput && _isOnGround)
+            if (_jumpInput && _coyoteTimeCounter>0)
             {
                 SetVelocityY(jumpPower);
             }
         }
+        private void CheckForCoyoteTime()
+        {
+            if (_isOnGround)
+            {
+                _coyoteTimeCounter = maxCoyoteTime;
+            }
+            else
+            {
+                _coyoteTimeCounter -= Time.deltaTime;
+            }
+
+
+        }
+        private void PlayerLanded()
+        {
+
+        }
+
         #region Set Velocity
         private void SetVelocityX(float xVelocity)
         {
