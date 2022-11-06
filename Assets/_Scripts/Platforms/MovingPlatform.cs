@@ -12,14 +12,14 @@ namespace Pounds.Platforms
 
         private void Start()
         {
-            RecursiveMovement();
+            PatrolMovement();
         }
-        private void RecursiveMovement()
+        private void PatrolMovement()
         {
             transform.DOMove(moveTransform[_currentPointIndex].position, pointReachTime).OnComplete(() =>
             {
                 SwitchMoveTarget();
-                RecursiveMovement();
+                PatrolMovement();
             });
         }
         private void SwitchMoveTarget()

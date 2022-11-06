@@ -10,14 +10,14 @@ namespace Pounds.Control
 
         private void LateUpdate()
         {
-            transform.position = new Vector3(
-                GameManager.Instance.PlayerObject.transform.position.x,
-                GameManager.Instance.PlayerObject.transform.position.y+yOffset, 
-                zOffset);
+            SetPosition();
         }
-
-
-
-
+        private void SetPosition()
+        {
+            transform.position = new Vector3(
+    GameManager.Instance.PlayerObject.transform.position.x,
+    GameManager.Instance.PlayerObject.transform.position.y + yOffset,
+    zOffset);
+        }
     }
 }

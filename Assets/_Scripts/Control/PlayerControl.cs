@@ -14,16 +14,14 @@ namespace Pounds.Control
         private bool _jumpInput { get { return Input.GetKeyDown(KeyCode.Space); } }
         private bool _jumpInputReleased { get { return Input.GetKeyUp(KeyCode.Space); } }
         #endregion
-
-        [SerializeField] private Transform bodyTransform;
-        [SerializeField] private float movementSpeed = 20f;
-        [SerializeField] private float jumpPower = 120f;
-
         #region Check Transforms
         [SerializeField] private Transform leftGroundCheckTransform;
         [SerializeField] private Transform rightGroundCheckTransform;
         #endregion
 
+        [SerializeField] private Transform bodyTransform;
+        [SerializeField] private float movementSpeed = 20f;
+        [SerializeField] private float jumpPower = 120f;
 
         private bool _isMovingLeft;
         private bool _isOnGround;
@@ -33,8 +31,6 @@ namespace Pounds.Control
         private Vector3 _currentVelocityVector;
 
         private Rigidbody _rigidbody;
-
-        [SerializeField] private float maxJumpInputPressTime = 1f;
 
         private void Awake()
         {
@@ -71,11 +67,13 @@ namespace Pounds.Control
             }
             SetVelocityX(0);
         }
-
-        // jump multiplier eklenecek input süresine göre ayarlanacak þekilde
-
         private void JumpAction()
         {
+            if (_jumpInputReleased && _rigidbody.velocity.y>0)  // input kalktýðýnda yükseliþin durmasý için
+            {
+                SetVelocityY(0);
+                return;
+            }
             if (_jumpInput && _isOnGround)
             {
                 SetVelocityY(jumpPower);

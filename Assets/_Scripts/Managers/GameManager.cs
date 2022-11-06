@@ -8,7 +8,6 @@ namespace Pounds.Managers
         public GameObject PlayerObject { get { return playerObject; } }
         [SerializeField]private GameObject playerObject;
 
-
         [SerializeField] private TextMeshProUGUI scoreText;
 
         private float _score;

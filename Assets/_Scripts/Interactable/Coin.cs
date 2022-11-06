@@ -24,7 +24,5 @@ namespace Pounds.Interactable
                 Destroy(gameObject);
             }
         }
-
-
     }
 }
