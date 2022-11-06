@@ -1,25 +1,22 @@
 using UnityEngine;
 using DG.Tweening;
 
-namespace Pounds
+namespace Pounds.Platforms
 {
     public class MovingPlatform : MonoBehaviour
     {
         [SerializeField] private Transform[] moveTransform;
+        [SerializeField] private float pointReachTime = 5;
 
         private int _currentPointIndex = 0;
 
-        private void Update()
-        {
-            
-        }
         private void Start()
         {
             RecursiveMovement();
         }
         private void RecursiveMovement()
         {
-            transform.DOMove(moveTransform[_currentPointIndex].position, 5).OnComplete(() =>
+            transform.DOMove(moveTransform[_currentPointIndex].position, pointReachTime).OnComplete(() =>
             {
                 SwitchMoveTarget();
                 RecursiveMovement();
