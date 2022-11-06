@@ -8,10 +8,7 @@ namespace Pounds.Control
     {
         #region Inputs
         private bool _leftInput { get { return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A); } }
-        private bool _leftInputReleased { get { return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A); } }
         private bool _rightInput { get { return Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D); ; } }
-        private bool _rightInputReleased { get { return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D); ; } }
-        private bool _jumpInput { get { return Input.GetKeyDown(KeyCode.Space); } }
         private bool _jumpInputPressed { get { return Input.GetKeyDown(KeyCode.Space); } }
         private bool _jumpInputReleased { get { return Input.GetKeyUp(KeyCode.Space); } }
         #endregion
@@ -59,11 +56,6 @@ namespace Pounds.Control
         }
         private void MovementAction()
         {
-            if (_leftInputReleased || _rightInputReleased)
-            {
-                SetVelocityX(0);
-                return;
-            }
             if (_leftInput)
             {
                 CheckMovementRotation();
