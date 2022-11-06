@@ -20,13 +20,8 @@ namespace Pounds.Control
         [SerializeField] private float jumpPower = 120f;
 
         #region Check Transforms
-
         [SerializeField] private Transform leftGroundCheckTransform;
         [SerializeField] private Transform rightGroundCheckTransform;
-
-        [SerializeField] private Transform leftTopCheckTransform;
-        [SerializeField] private Transform rightTopCheckTransform;
-
         #endregion
 
 
@@ -76,17 +71,7 @@ namespace Pounds.Control
             }
             SetVelocityX(0);
         }
-        private void GravityCheck()
-        {
-            if (_isOnGround)
-            {
-                _rigidbody.useGravity = false;
-            }
-            else
-            {
-                _rigidbody.useGravity = true;
-            }
-        }
+
         // jump multiplier eklenecek input süresine göre ayarlanacak þekilde
 
         private void JumpAction()
@@ -96,26 +81,6 @@ namespace Pounds.Control
                 SetVelocityY(jumpPower);
             }
         }
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawCube(transform.position, Vector3.one);
-        }
-        private void CheckIfPlayerOnLand()
-        {
-            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f) ||
-                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f);
-        }
-        private bool CheckLeftSide()
-        {
-            return Physics.Raycast(leftGroundCheckTransform.position, Vector3.left, 0.1f);
-
-        }
-        private bool CheckRightSide()
-        {
-            return Physics.Raycast(rightGroundCheckTransform.position, Vector3.right, 0.1f);
-
-        }
-
         #region Set Velocity
         private void SetVelocityX(float xVelocity)
         {
@@ -128,7 +93,23 @@ namespace Pounds.Control
             _rigidbody.velocity = _currentVelocityVector;
         }
         #endregion
-
+        #region Checks
+        private void GravityCheck()
+        {
+            if (_isOnGround)
+            {
+                _rigidbody.useGravity = false;
+            }
+            else
+            {
+                _rigidbody.useGravity = true;
+            }
+        }
+        private void CheckIfPlayerOnLand()
+        {
+            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f) ||
+                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f);
+        }
         private void CheckMovementRotation()
         {
             if (_isMovingLeft)
@@ -140,5 +121,6 @@ namespace Pounds.Control
                 _bodyTween = bodyTransform.DOLocalRotate(new Vector3(0, 0, 0), 0.3f);
             }
         }
+        #endregion
     }
 }
