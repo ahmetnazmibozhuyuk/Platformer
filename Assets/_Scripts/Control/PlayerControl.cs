@@ -112,7 +112,6 @@ namespace Pounds.Control
         }
         private void PlayerOnLandCheck()
         {
-            
             _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f, jumpableLayer) ||
                 Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f, jumpableLayer);
         }
