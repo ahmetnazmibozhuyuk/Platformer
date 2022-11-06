@@ -19,11 +19,16 @@ namespace Pounds.Control
         [SerializeField] private float movementSpeed = 20f;
         [SerializeField] private float jumpPower = 120f;
 
+        #region Check Transforms
+
         [SerializeField] private Transform leftGroundCheckTransform;
         [SerializeField] private Transform rightGroundCheckTransform;
 
         [SerializeField] private Transform leftTopCheckTransform;
         [SerializeField] private Transform rightTopCheckTransform;
+
+        #endregion
+
 
         private bool _isMovingLeft;
         private bool _isOnGround;
@@ -46,6 +51,7 @@ namespace Pounds.Control
             MovementAction();
             JumpAction();
             CheckIfPlayerOnLand();
+            GravityCheck();
         }
         private void MovementAction()
         {
@@ -54,22 +60,33 @@ namespace Pounds.Control
                 SetVelocityX(0);
                 return;
             }
-            if (_leftInput && (_isOnGround || !CheckLeftSide()))
+            if (_leftInput)
             {
                 CheckMovementRotation();
                 SetVelocityX(-movementSpeed);
                 _isMovingLeft = true;
                 return;
             }
-            if (_rightInput && (_isOnGround || !CheckRightSide()))
+            if (_rightInput)
             {
                 CheckMovementRotation();
                 SetVelocityX(movementSpeed);
                 _isMovingLeft = false;
                 return;
             }
+            SetVelocityX(0);
         }
-
+        private void GravityCheck()
+        {
+            if (_isOnGround)
+            {
+                _rigidbody.useGravity = false;
+            }
+            else
+            {
+                _rigidbody.useGravity = true;
+            }
+        }
         // jump multiplier eklenecek input süresine göre ayarlanacak þekilde
 
         private void JumpAction()
@@ -79,18 +96,24 @@ namespace Pounds.Control
                 SetVelocityY(jumpPower);
             }
         }
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawCube(transform.position, Vector3.one);
+        }
         private void CheckIfPlayerOnLand()
         {
-            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.1f) ||
-                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.1f);
+            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f) ||
+                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f);
         }
         private bool CheckLeftSide()
         {
-            return Physics.Raycast(leftGroundCheckTransform.position, Vector3.left, 0.2f);
+            return Physics.Raycast(leftGroundCheckTransform.position, Vector3.left, 0.1f);
+
         }
         private bool CheckRightSide()
         {
-            return Physics.Raycast(rightGroundCheckTransform.position, Vector3.right, 0.2f);
+            return Physics.Raycast(rightGroundCheckTransform.position, Vector3.right, 0.1f);
+
         }
 
         #region Set Velocity
