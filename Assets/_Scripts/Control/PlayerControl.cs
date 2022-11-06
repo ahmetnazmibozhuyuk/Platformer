@@ -24,6 +24,8 @@ namespace Pounds.Control
         [SerializeField] private float movementSpeed = 20f;
         [SerializeField] private float jumpPower = 120f;
 
+        [SerializeField] private LayerMask jumpableLayer;
+
         private bool _isMovingLeft;
         private bool _isOnGround;
 
@@ -80,7 +82,7 @@ namespace Pounds.Control
         }
         private void JumpAction()
         {
-            if (_jumpInputReleased && _rigidbody.velocity.y>0)  // input kalktýðýnda yükseliþin durmasý için
+            if (_jumpInputReleased && _rigidbody.velocity.y>0)  // input kalktiginda yukselisin durmasi icin
             {
                 SetVelocityY(0);
                 _coyoteTimeCounter = 0;
@@ -89,6 +91,7 @@ namespace Pounds.Control
             if (_jumpBufferCounter>0 && _coyoteTimeCounter>0)
             {
                 SetVelocityY(jumpPower);
+                _jumpBufferCounter = 0;
             }
         }
         #region Set Velocity
@@ -117,8 +120,9 @@ namespace Pounds.Control
         }
         private void PlayerOnLandCheck()
         {
-            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f) ||
-                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f);
+            
+            _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f, jumpableLayer) ||
+                Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f, jumpableLayer);
         }
         private void CheckMovementRotation()
         {
@@ -131,6 +135,7 @@ namespace Pounds.Control
                 _bodyTween = bodyTransform.DOLocalRotate(new Vector3(0, 0, 0), 0.3f);
             }
         }
+        //platformu biraktigi anda jump inputu kullanilmasýna olanak saglamak icin
         private void CoyoteTimeCheck()
         {
             if (_isOnGround)
@@ -142,6 +147,7 @@ namespace Pounds.Control
                 _coyoteTimeCounter -= Time.deltaTime;
             }
         }
+        //platforma inmek uzereyken jump inputu kullanildiginda yere deger degmez tekrar sicramaya olanak saglamak icin
         private void JumpBufferCheck()
         {
             if (_jumpInputPressed)

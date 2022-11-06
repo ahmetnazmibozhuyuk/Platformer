@@ -116,6 +116,9 @@ MonoBehaviour:
   bodyTransform: {fileID: 8419534187686100895}
   movementSpeed: 12
   jumpPower: 25
+  jumpableLayer:
+    serializedVersion: 2
+    m_Bits: 64
   maxCoyoteTime: 0.15
   maxJumpBufferTime: 0.15
 --- !u!54 &8309854626030874127

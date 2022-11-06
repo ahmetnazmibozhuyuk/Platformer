@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 115436959270204227}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MoveTarget2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 115436960648420868}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MoveTarget1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 115436960748647604}
   - component: {fileID: 115436960748647605}
   - component: {fileID: 115436960748647606}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MovingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 115436961028429543}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MovingPlatformGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
