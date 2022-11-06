@@ -12,6 +12,7 @@ namespace Pounds.Control
         private bool _rightInput { get { return Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D); ; } }
         private bool _rightInputReleased { get { return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D); ; } }
         private bool _jumpInput { get { return Input.GetKeyDown(KeyCode.Space); } }
+        private bool _jumpInputPressed { get { return Input.GetKeyDown(KeyCode.Space); } }
         private bool _jumpInputReleased { get { return Input.GetKeyUp(KeyCode.Space); } }
         #endregion
         #region Check Transforms
@@ -33,9 +34,11 @@ namespace Pounds.Control
         private Rigidbody _rigidbody;
 
 
-        private bool _inCoyoteTime;
         [SerializeField] private float maxCoyoteTime = 0.15f;
         private float _coyoteTimeCounter;
+
+        [SerializeField] private float maxJumpBufferTime = 0.15f;
+        private float _jumpBufferCounter;
 
         private void Awake()
         {
@@ -46,9 +49,11 @@ namespace Pounds.Control
         {
             MovementAction();
             JumpAction();
-            CheckIfPlayerOnLand();
+
+            PlayerOnLandCheck();
             GravityCheck();
-            CheckForCoyoteTime();
+            CoyoteTimeCheck();
+            JumpBufferCheck();
         }
         private void MovementAction()
         {
@@ -81,29 +86,11 @@ namespace Pounds.Control
                 _coyoteTimeCounter = 0;
                 return;
             }
-            if (_jumpInput && _coyoteTimeCounter>0)
+            if (_jumpBufferCounter>0 && _coyoteTimeCounter>0)
             {
                 SetVelocityY(jumpPower);
             }
         }
-        private void CheckForCoyoteTime()
-        {
-            if (_isOnGround)
-            {
-                _coyoteTimeCounter = maxCoyoteTime;
-            }
-            else
-            {
-                _coyoteTimeCounter -= Time.deltaTime;
-            }
-
-
-        }
-        private void PlayerLanded()
-        {
-
-        }
-
         #region Set Velocity
         private void SetVelocityX(float xVelocity)
         {
@@ -128,7 +115,7 @@ namespace Pounds.Control
                 _rigidbody.useGravity = true;
             }
         }
-        private void CheckIfPlayerOnLand()
+        private void PlayerOnLandCheck()
         {
             _isOnGround = Physics.Raycast(leftGroundCheckTransform.position, Vector3.up * -1, 0.3f) ||
                 Physics.Raycast(rightGroundCheckTransform.position, Vector3.up * -1, 0.3f);
@@ -142,6 +129,28 @@ namespace Pounds.Control
             else
             {
                 _bodyTween = bodyTransform.DOLocalRotate(new Vector3(0, 0, 0), 0.3f);
+            }
+        }
+        private void CoyoteTimeCheck()
+        {
+            if (_isOnGround)
+            {
+                _coyoteTimeCounter = maxCoyoteTime;
+            }
+            else
+            {
+                _coyoteTimeCounter -= Time.deltaTime;
+            }
+        }
+        private void JumpBufferCheck()
+        {
+            if (_jumpInputPressed)
+            {
+                _jumpBufferCounter = maxJumpBufferTime;
+            }
+            else
+            {
+                _jumpBufferCounter -= Time.deltaTime;
             }
         }
         #endregion

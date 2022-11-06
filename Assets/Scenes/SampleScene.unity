@@ -4146,10 +4146,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8309854626030874224, guid: 0b3155c4e675e6c40b077706eb15fc9f, type: 3}
-      propertyPath: maxCoyoteTime
-      value: 0.15
-      objectReference: {fileID: 0}
     - target: {fileID: 8309854626030874227, guid: 0b3155c4e675e6c40b077706eb15fc9f, type: 3}
       propertyPath: m_RootOrder
       value: 6
